@@ -5,13 +5,19 @@ describe('optionality check', () => {
     expect.assertions(3);
 
     const undefinedError = () => validate(undefined, v.nullable.string);
-    expect(undefinedError).toThrow("Validation failed: value has type 'undefined', but 'string | null' type is required.");
+    expect(undefinedError).toThrow(
+      "Validation failed: value has type 'undefined', but 'string | null' type is required.",
+    );
 
     const nullError = () => validate(null, v.optional.string);
-    expect(nullError).toThrow("Validation failed: value has type 'null', but 'string | undefined' type is required.");
+    expect(nullError).toThrow(
+      "Validation failed: value has type 'null', but 'string | undefined' type is required.",
+    );
 
     const typeError = () => validate(2, v.maybe.string);
-    expect(typeError).toThrow("Validation failed: value has type 'number', but 'string | null | undefined' type is required.");
+    expect(typeError).toThrow(
+      "Validation failed: value has type 'number', but 'string | null | undefined' type is required.",
+    );
   });
 
   it('pass validation if valid type is present', () => {
@@ -45,7 +51,7 @@ describe('optionality check', () => {
     const { schema } = buildSchema({
       name: v.maybe.string,
       age: v.maybe.number,
-      date: v.optional.Date
+      date: v.optional.Date,
     });
 
     const input = { date: Date.now() };

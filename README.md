@@ -5,8 +5,7 @@
 [![Coverage][coverage-img]][coverage-url]
 [![License][license-pic]][license-url]
 
-Values and types validator for Node.js.
-Asserts type of provided data and throws errors if types/values are not valid.
+Assert validator for TypeScript projects.
 
 ## Installation
 
@@ -18,23 +17,85 @@ npm install vator
 
 ```js
 // ESM or TypeScript projects:
-import vator from 'vator';
+import { v, validate, buildSchema } from 'vator';
 
 // CommonJS projects:
-const { vator } = require('vator');
+const { v, validate, buildSchema } = require('vator');
 ```
 
-## Available utilities
+## Examples
 
-1. [logger](./docs/logger.md)
-2. [timeout](./docs/timeout.md)
-3. [flag](./docs/flag.md)
-4. [prettify](./docs/prettify.md)
-5. [rand](./docs/rand.md)
-6. [http](./docs/httpClient.md)
-7. [clone](./docs/clone.md)
-8. [floats](./docs/floats.md)
-9. [validate / buildSchema](./docs/validate.md)
+### Primitives
+
+Will validate that `value` is a string type:
+
+```ts
+const value = 'some';
+
+validate(value, v.string);
+```
+
+Will throw an error if value is not matching the type:
+
+```ts
+const value = 22;
+
+validate(value, v.string);
+```
+
+Error:
+
+```log
+Validation failed: value has type 'number', but 'string' type is required.
+```
+
+### Objects and Arrays
+
+Will validate that `value` is an object with described fields.
+Also it's more convenient to use `buildSchema` helper to get `schema` and `ResultType`.
+
+> **Note**
+>
+> `ReturnType` is an empty object, only refers to valid result type!.
+
+```ts
+// Let's pretend that 'value' is 'unknown' type
+const value: unknown = {
+  name: 'some-name',
+  age: 100,
+  isOnline: false,
+  updatedAt: '2023-05-22T14:32:34.324Z',
+  unknownData: [2, 'foo', false]
+  cars: [
+    {
+      model: 'bmw',
+      year: 2017
+    },
+    {
+      model: 'audi',
+      year: null
+    }
+  ]
+};
+
+const { schema, ResultType } = buildSchema({
+  name: v.string,
+  age: v.optional.number,
+  isOnline: v.maybe.boolean,
+  updatedAt: v.Date,
+  unknownData: v.unknown,
+  cars: v.array(v.object({
+    model: v.literal('bmw', 'audi'),
+    year: v.nullable.number
+  }))
+});
+
+validate(value, schema)
+```
+
+Also `value` will then have valid types (because `validate()` asserts them)
+
+![Alt text](./assets/vator-example.png)
 
 [npm-img]: https://img.shields.io/npm/v/vator.svg?logo=npm
 [npm-url]: https://www.npmjs.com/package/vator

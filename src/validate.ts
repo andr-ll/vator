@@ -16,7 +16,7 @@ import {
 enum OptionalityByKey {
   optional = 'undefined',
   nullable = 'null',
-  maybe = 'null | undefined'
+  maybe = 'null | undefined',
 }
 
 const pickValidator =
@@ -25,17 +25,17 @@ const pickValidator =
     parentKeys,
     key,
   }: Omit<ValidatorOptions<ValidationSchema | Values>, 'value'>) =>
-    (value: unknown) => {
-      return schema instanceof PrimitivesSchema
-        ? validateBasic({ value, schema, key, parentKeys })
-        : schema instanceof ArraySchema
-          ? validateArray({ value, schema, parentKeys })
-          : schema instanceof ObjectSchema
-            ? validateObject({ value, schema, parentKeys })
-            : schema instanceof LiteralSchema
-              ? validateBasic({ value, schema, key, parentKeys })
-              : validateObject({ value, schema, parentKeys });
-    };
+  (value: unknown) => {
+    return schema instanceof PrimitivesSchema
+      ? validateBasic({ value, schema, key, parentKeys })
+      : schema instanceof ArraySchema
+      ? validateArray({ value, schema, parentKeys })
+      : schema instanceof ObjectSchema
+      ? validateObject({ value, schema, parentKeys })
+      : schema instanceof LiteralSchema
+      ? validateBasic({ value, schema, key, parentKeys })
+      : validateObject({ value, schema, parentKeys });
+  };
 
 function validateObject({
   value: obj,
@@ -158,8 +158,8 @@ function validateBasic({
       typeof item === 'string'
         ? Date.parse(String(item))
         : typeof item === 'number'
-          ? item
-          : NaN;
+        ? item
+        : NaN;
 
     if (Number.isNaN(seconds)) {
       throw new ValidationError({
@@ -174,7 +174,10 @@ function validateBasic({
     return new Date(seconds);
   }
 
-  const expected = schema.optional !== 'required' ? `${schema.type} | ${OptionalityByKey[schema.optional]}` : schema.type;
+  const expected =
+    schema.optional !== 'required'
+      ? `${schema.type} | ${OptionalityByKey[schema.optional]}`
+      : schema.type;
 
   if (received !== schema.type && schema.type !== 'unknown') {
     throw new ValidationError({
