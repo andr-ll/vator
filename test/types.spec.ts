@@ -2,7 +2,7 @@ import { v, validate } from '../src';
 
 describe('types check errors', () => {
   it('throws error if provided type is not expected', () => {
-    expect.assertions(9);
+    expect.assertions(10);
 
     const strError = () => validate(2, v.string);
     expect(strError).toThrow(
@@ -17,6 +17,11 @@ describe('types check errors', () => {
     const dateError = () => validate('', v.Date);
     expect(dateError).toThrow(
       "Validation failed: could not convert value to 'Date'. Invalid value of type 'string' is used.",
+    );
+
+    const date2Error = () => validate({}, v.Date);
+    expect(date2Error).toThrow(
+      "Validation failed: could not convert value to 'Date'. Invalid value of type 'object' is used.",
     );
 
     const boolError = () => validate('', v.boolean);

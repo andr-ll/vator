@@ -13,23 +13,29 @@ import {
   ValidatorOptions,
 } from './types';
 
+enum OptionalityByKey {
+  optional = 'undefined',
+  nullable = 'null',
+  maybe = 'null | undefined'
+}
+
 const pickValidator =
   ({
     schema,
     parentKeys,
     key,
   }: Omit<ValidatorOptions<ValidationSchema | Values>, 'value'>) =>
-  (value: unknown) => {
-    return schema instanceof PrimitivesSchema
-      ? validateBasic({ value, schema, key, parentKeys })
-      : schema instanceof ArraySchema
-      ? validateArray({ value, schema, parentKeys })
-      : schema instanceof ObjectSchema
-      ? validateObject({ value, schema, parentKeys })
-      : schema instanceof LiteralSchema
-      ? validateBasic({ value, schema, key, parentKeys })
-      : validateObject({ value, schema, parentKeys });
-  };
+    (value: unknown) => {
+      return schema instanceof PrimitivesSchema
+        ? validateBasic({ value, schema, key, parentKeys })
+        : schema instanceof ArraySchema
+          ? validateArray({ value, schema, parentKeys })
+          : schema instanceof ObjectSchema
+            ? validateObject({ value, schema, parentKeys })
+            : schema instanceof LiteralSchema
+              ? validateBasic({ value, schema, key, parentKeys })
+              : validateObject({ value, schema, parentKeys });
+    };
 
 function validateObject({
   value: obj,
@@ -123,7 +129,7 @@ function validateBasic({
 
   key = key ?? 'single value';
   parentKeys = parentKeys?.filter((i) => i !== key);
-  const received = typeof item;
+  const received = item === null ? 'null' : typeof item;
 
   if (schema.type === 'literal') {
     if (typeof item !== 'string') {
@@ -152,8 +158,8 @@ function validateBasic({
       typeof item === 'string'
         ? Date.parse(String(item))
         : typeof item === 'number'
-        ? item
-        : NaN;
+          ? item
+          : NaN;
 
     if (Number.isNaN(seconds)) {
       throw new ValidationError({
@@ -168,10 +174,12 @@ function validateBasic({
     return new Date(seconds);
   }
 
+  const expected = schema.optional !== 'required' ? `${schema.type} | ${OptionalityByKey[schema.optional]}` : schema.type;
+
   if (received !== schema.type && schema.type !== 'unknown') {
     throw new ValidationError({
       key,
-      expected: schema.type,
+      expected,
       received,
       parentKeys,
     });
