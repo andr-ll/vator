@@ -28,11 +28,11 @@ type LiteralToTypes = {
 };
 
 type ArrayTypeValidation<V extends Values> = V extends PrimitivesSchemaType
-  ? Array<isOptional<LiteralToTypes[V['type']], V['optional']>>
+  ? Array<isOptional<LiteralToTypes[V['type']], V['optionality']>>
   : V extends ObjectSchemaType
-  ? Array<isOptional<ValidationResult<V['schema']>, V['optional']>>
+  ? Array<isOptional<ValidationResult<V['schema']>, V['optionality']>>
   : V extends ArraySchemaType
-  ? Array<isOptional<ArrayTypeValidation<V['values']>, V['optional']>>
+  ? Array<isOptional<ArrayTypeValidation<V['values']>, V['optionality']>>
   : never;
 
 type Validate<V extends Values> = V extends PrimitivesSchemaType
@@ -50,11 +50,11 @@ export type ValidationResult<Schema extends ValidationSchema | Values> =
     ? {
         [K in keyof Schema]: isOptional<
           Validate<Schema[K]>,
-          Schema[K]['optional']
+          Schema[K]['optionality']
         >;
       }
     : Schema extends Values
-    ? isOptional<Validate<Schema>, Schema['optional']>
+    ? isOptional<Validate<Schema>, Schema['optionality']>
     : never;
 
 export type ValidatorOptions<S extends ValidationSchema | Values> = {

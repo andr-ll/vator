@@ -16,26 +16,26 @@ export type Optionality = 'required' | 'nullable' | 'optional' | 'maybe';
 
 export type PrimitivesSchemaType = {
   type: PrimitiveTypes;
-  optional: Optionality;
+  optionality: Optionality;
 };
 
 export type Literals = string[];
 
 export type LiteralSchemaType = {
   type: LiteralType;
-  optional: Optionality;
+  optionality: Optionality;
   literals: Literals;
 };
 
 export type ObjectSchemaType = {
   type: ObjectType;
-  optional: Optionality;
+  optionality: Optionality;
   schema: ValidationSchema;
 };
 
 export type ArraySchemaType = {
   type: ArrayType;
-  optional: Optionality;
+  optionality: Optionality;
   values: Values;
 };
 

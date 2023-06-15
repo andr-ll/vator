@@ -1,3 +1,4 @@
+import { OptionalityByKey } from './enums';
 import { ValidationError } from './error';
 import {
   ArraySchema,
@@ -12,12 +13,6 @@ import {
   ArraySchemaType,
   ValidatorOptions,
 } from './types';
-
-enum OptionalityByKey {
-  optional = 'undefined',
-  nullable = 'null',
-  maybe = 'null | undefined',
-}
 
 const pickValidator =
   ({
@@ -175,8 +170,8 @@ function validateBasic({
   }
 
   const expected =
-    schema.optional !== 'required'
-      ? `${schema.type} | ${OptionalityByKey[schema.optional]}`
+    schema.optionality !== 'required'
+      ? `${schema.type} | ${OptionalityByKey[schema.optionality]}`
       : schema.type;
 
   if (received !== schema.type && schema.type !== 'unknown') {
@@ -195,17 +190,17 @@ function checkOptionality(
   schema: ValidatorOptions<Values>['schema'],
   value: unknown,
 ) {
-  if (schema.optional === 'required') return;
+  if (schema.optionality === 'required') return;
 
-  if (schema.optional === 'optional' && value === undefined) {
+  if (schema.optionality === 'optional' && value === undefined) {
     return { value };
   }
 
-  if (schema.optional === 'nullable' && value === null) {
+  if (schema.optionality === 'nullable' && value === null) {
     return { value };
   }
 
-  if (schema.optional === 'maybe' && value == null) {
+  if (schema.optionality === 'maybe' && value == null) {
     return { value };
   }
 

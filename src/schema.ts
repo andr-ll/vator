@@ -16,44 +16,29 @@ import {
 export class PrimitivesSchema<T extends PrimitiveTypes, O extends Optionality>
   implements PrimitivesSchemaType
 {
-  constructor(public type: T, public optional: O) {}
+  constructor(public type: T, public optionality: O) {}
 }
 
-export class ObjectSchema<
-  T extends ObjectType,
-  O extends Optionality,
-  S extends ValidationSchema,
-> implements ObjectSchemaType
+export class ObjectSchema<O extends Optionality, S extends ValidationSchema>
+  implements ObjectSchemaType
 {
-  public type: T;
+  public type: ObjectType = 'object';
 
-  constructor(public optional: O, public schema: S) {
-    this.type = 'object' as T;
-  }
+  constructor(public optionality: O, public schema: S) {}
 }
 
-export class ArraySchema<
-  T extends ArrayType,
-  O extends Optionality,
-  V extends Values,
-> implements ArraySchemaType
+export class ArraySchema<O extends Optionality, V extends Values>
+  implements ArraySchemaType
 {
-  public type: T;
+  public type: ArrayType = 'array';
 
-  constructor(public optional: O, public values: V) {
-    this.type = 'array' as T;
-  }
+  constructor(public optionality: O, public values: V) {}
 }
 
-export class LiteralSchema<
-  T extends LiteralType,
-  O extends Optionality,
-  L extends Literals,
-> implements LiteralSchemaType
+export class LiteralSchema<O extends Optionality, L extends Literals>
+  implements LiteralSchemaType
 {
-  public type: T;
+  public type: LiteralType = 'literal';
 
-  constructor(public optional: O, public literals: L) {
-    this.type = 'literal' as T;
-  }
+  constructor(public optionality: O, public literals: L) {}
 }
