@@ -1,21 +1,10 @@
 import { OptionalKeys, Optionality, ValidationSchema, Values } from './types';
-import {
-  ArraySchema,
-  LiteralSchema,
-  ObjectSchema,
-  PrimitivesSchema,
-} from './schema';
+import { ArraySchema, LiteralSchema, ObjectSchema, PrimitivesSchema } from './schema';
 
 export class Vator<O extends Optionality> {
-  private static _optionalV: Omit<Vator<'optional'>, OptionalKeys> = new Vator(
-    'optional',
-  );
-  private static _nullableV: Omit<Vator<'nullable'>, OptionalKeys> = new Vator(
-    'nullable',
-  );
-  private static _maybeV: Omit<Vator<'maybe'>, OptionalKeys> = new Vator(
-    'maybe',
-  );
+  private static _optionalV: Omit<Vator<'optional'>, OptionalKeys> = new Vator('optional');
+  private static _nullableV: Omit<Vator<'nullable'>, OptionalKeys> = new Vator('nullable');
+  private static _maybeV: Omit<Vator<'maybe'>, OptionalKeys> = new Vator('maybe');
 
   constructor(private _optionality: O) {}
 

@@ -5,14 +5,10 @@ describe('types check errors', () => {
     expect.assertions(10);
 
     const strError = () => validate(2, v.string);
-    expect(strError).toThrow(
-      "Validation failed: value has type 'number', but 'string' type is required.",
-    );
+    expect(strError).toThrow("Validation failed: value has type 'number', but 'string' type is required.");
 
     const numbError = () => validate('', v.number);
-    expect(numbError).toThrow(
-      "Validation failed: value has type 'string', but 'number' type is required.",
-    );
+    expect(numbError).toThrow("Validation failed: value has type 'string', but 'number' type is required.");
 
     const dateError = () => validate('', v.Date);
     expect(dateError).toThrow(
@@ -25,14 +21,10 @@ describe('types check errors', () => {
     );
 
     const boolError = () => validate('', v.boolean);
-    expect(boolError).toThrow(
-      "Validation failed: value has type 'string', but 'boolean' type is required.",
-    );
+    expect(boolError).toThrow("Validation failed: value has type 'string', but 'boolean' type is required.");
 
     const literalError = () => validate('', v.literal('foo', 'bar'));
-    expect(literalError).toThrow(
-      "Validation failed: value has type '', but 'foo | bar' type is required.",
-    );
+    expect(literalError).toThrow("Validation failed: value has type '', but 'foo | bar' type is required.");
 
     const literalTypeError = () => validate(22, v.literal('foo', 'bar'));
     expect(literalTypeError).toThrow(
@@ -40,14 +32,10 @@ describe('types check errors', () => {
     );
 
     const nullError = () => validate('', v.null);
-    expect(nullError).toThrow(
-      "Validation failed: value has type 'string', but 'null' type is required.",
-    );
+    expect(nullError).toThrow("Validation failed: value has type 'string', but 'null' type is required.");
 
     const arrayError = () => validate('', v.array(v.string));
-    expect(arrayError).toThrow(
-      "Validation failed: value has type 'string', but 'array' type is required.",
-    );
+    expect(arrayError).toThrow("Validation failed: value has type 'string', but 'array' type is required.");
 
     const objError = () => validate('', v.object({}));
     expect(objError).toThrow(
@@ -63,17 +51,13 @@ describe('types check errors', () => {
       "Validation failed: array item has type 'number', but 'string' type is required.",
     );
 
-    const array2Error = () =>
-      validate([{ name: 22 }], v.array(v.object({ name: v.string })));
+    const array2Error = () => validate([{ name: 22 }], v.array(v.object({ name: v.string })));
     expect(array2Error).toThrow(
       "Validation failed: key 'name' has type 'number', but 'string' type is required.",
     );
 
     const array3Error = () =>
-      validate(
-        [{ some: { name: 22 } }],
-        v.array(v.object({ some: v.object({ name: v.string }) })),
-      );
+      validate([{ some: { name: 22 } }], v.array(v.object({ some: v.object({ name: v.string }) })));
     expect(array3Error).toThrow(
       "Validation failed: key 'name' has type 'number', but 'string' type is required (at 'some').",
     );
@@ -82,17 +66,13 @@ describe('types check errors', () => {
   it('throws an error if object keys have unexpected types', () => {
     expect.assertions(3);
 
-    const objectError = () =>
-      validate({ name: 22 }, v.object({ name: v.string }));
+    const objectError = () => validate({ name: 22 }, v.object({ name: v.string }));
     expect(objectError).toThrow(
       "Validation failed: key 'name' has type 'number', but 'string' type is required.",
     );
 
-    const object2Error = () =>
-      validate({ name: 'foo' }, v.object({ name: v.string, age: v.number }));
-    expect(object2Error).toThrow(
-      "Validation failed: key 'age' is missing, but 'number' type is required.",
-    );
+    const object2Error = () => validate({ name: 'foo' }, v.object({ name: v.string, age: v.number }));
+    expect(object2Error).toThrow("Validation failed: key 'age' is missing, but 'number' type is required.");
 
     const object3Error = () =>
       validate(

@@ -1,25 +1,10 @@
 import { OptionalityByKey } from './enums';
 import { ValidationError } from './error';
-import {
-  ArraySchema,
-  LiteralSchema,
-  ObjectSchema,
-  PrimitivesSchema,
-} from './schema';
-import {
-  ValidationSchema,
-  ValidationResult,
-  Values,
-  ArraySchemaType,
-  ValidatorOptions,
-} from './types';
+import { ArraySchema, LiteralSchema, ObjectSchema, PrimitivesSchema } from './schema';
+import { ValidationSchema, ValidationResult, Values, ArraySchemaType, ValidatorOptions } from './types';
 
 const pickValidator =
-  ({
-    schema,
-    parentKeys,
-    key,
-  }: Omit<ValidatorOptions<ValidationSchema | Values>, 'value'>) =>
+  ({ schema, parentKeys, key }: Omit<ValidatorOptions<ValidationSchema | Values>, 'value'>) =>
   (value: unknown) => {
     return schema instanceof PrimitivesSchema
       ? validateBasic({ value, schema, key, parentKeys })
@@ -82,11 +67,7 @@ function validateObject({
   return object;
 }
 
-function validateArray({
-  schema,
-  value: arr,
-  parentKeys,
-}: Omit<ValidatorOptions<ArraySchemaType>, 'key'>) {
+function validateArray({ schema, value: arr, parentKeys }: Omit<ValidatorOptions<ArraySchemaType>, 'key'>) {
   const optional = checkOptionality(schema, arr);
   if (optional) return optional.value;
 
@@ -113,12 +94,7 @@ function validateArray({
   return arr;
 }
 
-function validateBasic({
-  schema,
-  value: item,
-  key,
-  parentKeys,
-}: ValidatorOptions<Values>) {
+function validateBasic({ schema, value: item, key, parentKeys }: ValidatorOptions<Values>) {
   const optional = checkOptionality(schema, item);
   if (optional) return optional.value;
 
@@ -150,11 +126,7 @@ function validateBasic({
 
   if (schema.type === 'Date') {
     const seconds =
-      typeof item === 'string'
-        ? Date.parse(String(item))
-        : typeof item === 'number'
-        ? item
-        : NaN;
+      typeof item === 'string' ? Date.parse(String(item)) : typeof item === 'number' ? item : NaN;
 
     if (Number.isNaN(seconds)) {
       throw new ValidationError({
@@ -186,10 +158,7 @@ function validateBasic({
   return item;
 }
 
-function checkOptionality(
-  schema: ValidatorOptions<Values>['schema'],
-  value: unknown,
-) {
+function checkOptionality(schema: ValidatorOptions<Values>['schema'], value: unknown) {
   if (schema.optionality === 'required') return;
 
   if (schema.optionality === 'optional' && value === undefined) {

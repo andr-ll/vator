@@ -1,13 +1,7 @@
 import { ValidationErrorPayload } from './types';
 
 export class ValidationError extends Error {
-  constructor({
-    key,
-    received,
-    expected,
-    parentKeys,
-    convertFailed,
-  }: ValidationErrorPayload) {
+  constructor({ key, received, expected, parentKeys, convertFailed }: ValidationErrorPayload) {
     const item = key
       ? key === 'single value'
         ? 'value'
@@ -16,12 +10,9 @@ export class ValidationError extends Error {
         : `key '${key}'`
       : 'array item';
 
-    const receivedMessage =
-      received === 'missing' ? 'is missing' : `has type '${received}'`;
+    const receivedMessage = received === 'missing' ? 'is missing' : `has type '${received}'`;
 
-    const keyTrace = `${
-      parentKeys?.length ? ` (at '${parentKeys.join(' -> ')}')` : ''
-    }.`;
+    const keyTrace = `${parentKeys?.length ? ` (at '${parentKeys.join(' -> ')}')` : ''}.`;
 
     const validationMessageEnd = 'type is required' + keyTrace;
     const convertMessageEnd = 'is used' + keyTrace;
