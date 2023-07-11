@@ -17,15 +17,46 @@ npm install vator
 
 ```js
 // ESM or TypeScript projects:
-import { v, validate, buildSchema } from 'vator';
+import { v, validate, buildSchema, is } from 'vator';
 
 // CommonJS projects:
-const { v, validate, buildSchema } = require('vator');
+const { v, validate, buildSchema, is } = require('vator');
 ```
 
 ## Examples
 
-### Primitives
+### 'is'
+
+`is` is a collection of shortcuts for comparing types of values.
+The regular `if (a === undefined) ...` can be replaced with
+`if (is.undefined(a)) ...` and so on.
+
+Designed to be used in conditions, because it uses `type guard` approach.
+
+```ts
+const maybeNumber = Math.random() > 0.5 ? 10 : null;
+
+if (is.number(maybeNumber)) {
+  // TS will not complain, because maybeNumber is number already
+  console.log(maybeNumber + 10); // 20
+} else {
+  console.log(maybeNumber === null); // true
+}
+```
+
+Available `is` validators:
+
+```ts
+is.undefined();
+is.null();
+is.nullable();
+is.string();
+is.number();
+is.email();
+is.phone();
+```
+
+### Primitives with 'validate'
 
 Will validate that `value` is a string type:
 
@@ -49,7 +80,7 @@ Error:
 Validation failed: value has type 'number', but 'string' type is required.
 ```
 
-### Objects and Arrays
+### Objects and Arrays with 'validate'
 
 Will validate that `value` is an object with described fields.
 Also it's more convenient to use `buildSchema` helper to get `schema` and `ResultType`.
