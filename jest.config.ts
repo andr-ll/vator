@@ -4,13 +4,7 @@ export default {
   collectCoverage: true,
   collectCoverageFrom: ['./src/**/**'],
   coverageDirectory: 'coverage',
-  coveragePathIgnorePatterns: [
-    '/node_modules/',
-    '/docs/',
-    'types.ts',
-    'types',
-    '/src/index.ts',
-  ],
+  coveragePathIgnorePatterns: ['/node_modules/', '/docs/', 'types.ts', 'types', '/src/index.ts'],
   coverageProvider: 'v8',
   coverageReporters: ['text', 'lcov'],
   coverageThreshold: {

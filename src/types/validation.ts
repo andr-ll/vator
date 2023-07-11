@@ -45,17 +45,13 @@ type Validate<V extends Values> = V extends PrimitivesSchemaType
   ? V['literals'][number]
   : never;
 
-export type ValidationResult<Schema extends ValidationSchema | Values> =
-  Schema extends ValidationSchema
-    ? {
-        [K in keyof Schema]: isOptional<
-          Validate<Schema[K]>,
-          Schema[K]['optionality']
-        >;
-      }
-    : Schema extends Values
-    ? isOptional<Validate<Schema>, Schema['optionality']>
-    : never;
+export type ValidationResult<Schema extends ValidationSchema | Values> = Schema extends ValidationSchema
+  ? {
+      [K in keyof Schema]: isOptional<Validate<Schema[K]>, Schema[K]['optionality']>;
+    }
+  : Schema extends Values
+  ? isOptional<Validate<Schema>, Schema['optionality']>
+  : never;
 
 export type ValidatorOptions<S extends ValidationSchema | Values> = {
   schema: S;

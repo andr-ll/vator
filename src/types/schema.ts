@@ -1,10 +1,4 @@
-export type PrimitiveTypes =
-  | 'string'
-  | 'number'
-  | 'boolean'
-  | 'unknown'
-  | 'null'
-  | 'Date';
+export type PrimitiveTypes = 'string' | 'number' | 'boolean' | 'unknown' | 'null' | 'Date';
 
 export type ObjectType = 'object';
 export type ArrayType = 'array';
@@ -39,11 +33,7 @@ export type ArraySchemaType = {
   values: Values;
 };
 
-export type Values =
-  | PrimitivesSchemaType
-  | ObjectSchemaType
-  | ArraySchemaType
-  | LiteralSchemaType;
+export type Values = PrimitivesSchemaType | ObjectSchemaType | ArraySchemaType | LiteralSchemaType;
 
 export type ValidationSchema = {
   [key: KeyType]: Values;
