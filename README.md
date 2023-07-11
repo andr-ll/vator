@@ -28,8 +28,21 @@ const { v, validate, buildSchema, is } = require('vator');
 ### 'is'
 
 `is` is a collection of shortcuts for comparing types of values.
-The regular `if (a === undefined) ...` can be replaced with
-`if (is.undefined(a)) ...` and so on.
+The regular
+
+```ts
+if (value === undefined) {
+  ...
+}
+```
+
+can be replaced with more convenient
+
+```ts
+if (is.undefined(value)) {
+  ...
+}
+```
 
 Designed to be used in conditions, because it uses `type guard` approach.
 
