@@ -1,6 +1,6 @@
 {
   "name": "vator",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": "Andrii Lytovchenko <andr.lyt.dev@gmail.com>",
   "license": "MIT",
   "description": "Assert validator for TypeScript projects",
@@ -56,7 +56,7 @@
     "eslint": "^8.44.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-jest": "^27.2.2",
-    "eslint-plugin-prettier": "^5.0.0-alpha.2",
+    "eslint-plugin-prettier": "^5.0.0",
     "jest": "^29.6.1",
     "npsh": "^2.0.5",
     "prettier": "^3.0.0",
