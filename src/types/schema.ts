@@ -7,6 +7,7 @@ export type LiteralType = 'literal';
 type KeyType = string | number | symbol;
 
 export type Optionality = 'required' | 'nullable' | 'optional' | 'maybe';
+export type OptionalKeys = 'optional' | 'nullable' | 'maybe';
 
 export type PrimitivesSchemaType = {
   type: PrimitiveTypes;
