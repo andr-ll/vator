@@ -36,10 +36,10 @@ function validateObject({
   }
 
   const object = obj as Record<string, unknown>;
-  const validationSchema = schema as ValidationSchema;
+  const validationSchema = Object.entries(schema as ValidationSchema);
 
-  for (const key in validationSchema) {
-    const valueSchema = validationSchema[key];
+  for (let i = 0; i < validationSchema.length; i++) {
+    const [key, valueSchema] = validationSchema[i];
     const value = object[key];
     const expected = valueSchema.type;
 
@@ -82,14 +82,14 @@ function validateArray({ schema, value: arr, parentKeys }: Omit<ValidatorOptions
 
   const schemaType = schema.values;
 
-  arr.forEach((item, id) => {
+  for (let i = 0; i < arr.length; i++) {
     const validator = pickValidator({
       schema: schemaType,
       parentKeys,
       key: 'array item',
     });
-    arr[id] = validator(item);
-  });
+    arr[i] = validator(arr[i]);
+  }
 
   return arr;
 }
@@ -100,7 +100,8 @@ function validateBasic({ schema, value: item, key, parentKeys }: ValidatorOption
 
   key = key ?? 'single value';
   parentKeys = parentKeys?.filter((i) => i !== key);
-  const received = item === null ? 'null' : typeof item;
+  const received =
+    item === null ? 'null' : Array.isArray(item) ? 'array' : item instanceof Date ? 'Date' : typeof item;
 
   if (schema.type === 'literal') {
     if (typeof item !== 'string') {
@@ -161,19 +162,12 @@ function validateBasic({ schema, value: item, key, parentKeys }: ValidatorOption
 function checkOptionality(schema: ValidatorOptions<Values>['schema'], value: unknown) {
   if (schema.optionality === 'required') return;
 
-  if (schema.optionality === 'optional' && value === undefined) {
-    return { value };
-  }
+  const condition =
+    (schema.optionality === 'optional' && value === undefined) ||
+    (schema.optionality === 'nullable' && value === null) ||
+    (schema.optionality === 'maybe' && value == null);
 
-  if (schema.optionality === 'nullable' && value === null) {
-    return { value };
-  }
-
-  if (schema.optionality === 'maybe' && value == null) {
-    return { value };
-  }
-
-  return;
+  return condition ? { value } : undefined;
 }
 
 /**

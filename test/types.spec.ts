@@ -2,7 +2,7 @@ import { v, validate } from '../src';
 
 describe('types check errors', () => {
   it('throws error if provided type is not expected', () => {
-    expect.assertions(10);
+    expect.assertions(13);
 
     const strError = () => validate(2, v.string);
     expect(strError).toThrow("Validation failed: value has type 'number', but 'string' type is required.");
@@ -37,10 +37,17 @@ describe('types check errors', () => {
     const arrayError = () => validate('', v.array(v.string));
     expect(arrayError).toThrow("Validation failed: value has type 'string', but 'array' type is required.");
 
-    const objError = () => validate('', v.object({}));
-    expect(objError).toThrow(
-      "Validation failed: array item has type 'string', but 'object' type is required.",
-    );
+    const objError = () => validate('', v.object({ age: v.number }));
+    expect(objError).toThrow("Validation failed: value has type 'string', but 'object' type is required.");
+
+    const objError2 = () => validate({}, v.string);
+    expect(objError2).toThrow("Validation failed: value has type 'object', but 'string' type is required.");
+
+    const arrErr = () => validate([], v.string);
+    expect(arrErr).toThrow("Validation failed: value has type 'array', but 'string' type is required.");
+
+    const dateErr = () => validate(new Date(), v.string);
+    expect(dateErr).toThrow("Validation failed: value has type 'Date', but 'string' type is required.");
   });
 
   it('throws an error if array values have unexpected type', () => {
@@ -91,7 +98,7 @@ describe('types check errors', () => {
 
 describe('types checks valid result', () => {
   it('checks that object has valid fields and does not throw an error', () => {
-    expect.assertions(1);
+    expect.assertions(12);
 
     const data = {
       name: 'foo',
@@ -125,5 +132,38 @@ describe('types checks valid result', () => {
       });
 
     expect(errCheck).not.toThrow();
+
+    const strErr = () => validate('', v.string);
+    expect(strErr).not.toThrow();
+
+    const numbErr = () => validate(1, v.number);
+    expect(numbErr).not.toThrow();
+
+    const booleanErr = () => validate(false, v.boolean);
+    expect(booleanErr).not.toThrow();
+
+    const dateErr = () => validate(Date.now(), v.Date);
+    expect(dateErr).not.toThrow();
+
+    const nullErr = () => validate(null, v.null);
+    expect(nullErr).not.toThrow();
+
+    const undefinedErr = () => validate(undefined, v.optional.boolean);
+    expect(undefinedErr).not.toThrow();
+
+    const nullableErr = () => validate(null, v.nullable.string);
+    expect(nullableErr).not.toThrow();
+
+    const maybeErr = () => validate(null, v.maybe.string);
+    expect(maybeErr).not.toThrow();
+
+    const maybeErr2 = () => validate(undefined, v.maybe.string);
+    expect(maybeErr2).not.toThrow();
+
+    const arrErr = () => validate([], v.array(v.string));
+    expect(arrErr).not.toThrow();
+
+    const objErr = () => validate({}, v.object({}));
+    expect(objErr).not.toThrow();
   });
 });
