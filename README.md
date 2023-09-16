@@ -4,6 +4,7 @@
 [![Build][build-img]][build-url]
 [![Coverage][coverage-img]][coverage-url]
 [![License][license-pic]][license-url]
+[![Downloads][npm-downloads]][npm-url]
 
 Assert validator for TypeScript projects.
 
@@ -143,6 +144,7 @@ Also `value` will then have valid types (because `validate()` asserts them)
 
 [npm-img]: https://img.shields.io/npm/v/vator.svg?logo=npm
 [npm-url]: https://www.npmjs.com/package/vator
+[npm-downloads]: https://img.shields.io/npm/dt/vator?logo=Hack%20The%20Box&logoColor=green&label=downloads
 [build-img]: https://img.shields.io/github/actions/workflow/status/andr-ii/vator/build.yml?logo=github
 [build-url]: https://github.com/andr-ii/vator/actions/workflows/build.yml
 [coverage-img]: https://img.shields.io/coverallsCoverage/github/andr-ii/vator?label=coverage&logo=jest
