@@ -1,7 +1,17 @@
 import { ValidationErrorPayload } from './types';
 
 export class ValidationError extends Error {
-  constructor({ key, received, expected, parentKeys, convertFailed }: ValidationErrorPayload) {
+  constructor(errorPayload: ValidationErrorPayload) {
+    const prefix = 'Validation failed: ';
+    const { customMessage } = errorPayload;
+
+    if (customMessage) {
+      super(`${prefix}${customMessage}`);
+      return;
+    }
+
+    const { key, received, expected, parentKeys, convertFailed } = errorPayload;
+
     const item = key
       ? key === 'single value'
         ? 'value'
@@ -21,6 +31,6 @@ export class ValidationError extends Error {
       ? `could not convert ${item} to '${expected}'. Invalid value of type '${received}' ${convertMessageEnd}`
       : `${item} ${receivedMessage}, but '${expected}' ${validationMessageEnd}`;
 
-    super(`Validation failed: ${message}`);
+    super(`${prefix}${message}`);
   }
 }

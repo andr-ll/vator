@@ -4,4 +4,5 @@ export type ValidationErrorPayload = {
   key?: string;
   parentKeys?: string[];
   convertFailed?: boolean;
+  customMessage?: string;
 };

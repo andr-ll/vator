@@ -183,8 +183,20 @@ export function buildSchema<S extends ValidationSchema | Values>(schema: S) {
 export function validate<S extends ValidationSchema | Values>(
   data: unknown,
   schema: S,
+  errorMessage?: string,
 ): asserts data is ValidationResult<S> {
-  const validator = pickValidator({ schema });
+  try {
+    const validator = pickValidator({ schema });
+    validator(data);
+  } catch (error) {
+    if (errorMessage) {
+      throw new ValidationError({
+        customMessage: errorMessage,
+        expected: '',
+        received: '',
+      });
+    }
 
-  validator(data);
+    throw error;
+  }
 }
