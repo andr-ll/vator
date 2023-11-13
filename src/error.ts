@@ -16,8 +16,8 @@ export class ValidationError extends Error {
       ? key === 'single value'
         ? 'value'
         : key === 'array item'
-        ? key
-        : `key '${key}'`
+          ? key
+          : `key '${key}'`
       : 'value';
 
     const receivedMessage = received === 'missing' ? 'is missing' : `has type '${received}'`;
