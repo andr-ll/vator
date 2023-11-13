@@ -9,12 +9,12 @@ const pickValidator =
     return schema instanceof PrimitivesSchema
       ? validateBasic({ value, schema, key, parentKeys })
       : schema instanceof ArraySchema
-      ? validateArray({ value, schema, parentKeys })
-      : schema instanceof ObjectSchema
-      ? validateObject({ value, schema, parentKeys })
-      : schema instanceof LiteralSchema
-      ? validateBasic({ value, schema, key, parentKeys })
-      : validateObject({ value, schema, parentKeys });
+        ? validateArray({ value, schema, parentKeys })
+        : schema instanceof ObjectSchema
+          ? validateObject({ value, schema, parentKeys })
+          : schema instanceof LiteralSchema
+            ? validateBasic({ value, schema, key, parentKeys })
+            : validateObject({ value, schema, parentKeys });
   };
 
 function validateObject({
